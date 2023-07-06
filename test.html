@@ -1,0 +1,200 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+<title>dompdf Debugging Helper</title>
+
+<link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+<style>
+#dompdfSettings {
+	padding: 8px;
+}
+#dompdfInput-local {
+	border: 1px solid #cccccc;
+	padding: 1em;
+	overflow: auto;
+}
+#dompdfInput-local > p {
+	margin: 0em 0em 1em 0em;
+	border-bottom: 1px solid black;
+}
+#dompdfInput-local > div {
+	display: inline-block;
+	width: 20em;
+	padding: .25em .5em;
+	position: relative;
+	overflow: hidden;
+	white-space: pre;
+}
+#dompdfInput-local > div:hover {
+	background-color: #999999;
+}
+#dompdfInput-local > div > label {
+	display: block;
+	float: left;
+	width: 18em;
+}
+#dompdfInput-local > div > span.view {
+	visibility: hidden;
+	font-size: 78%;
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	background-color: #ffffff;
+	border: 1px solid #999999;
+	padding: 2px;
+}
+#dompdfInput-local > div:hover > span.view {
+	display: inline;
+	visibility: visible;
+	line-height: 1.5em;
+}
+#dompdfInput-local > div > span.view > a {
+	color: #000066;
+	text-decoration: none;
+}
+#dompdfInput-local > div > span.view > a:hover {
+	text-decoration: underline;
+}
+
+.ui-tabs { font-size: 88%; }
+.ui-tabs-panel { position: relative; }
+#dompdfInput-code {
+	min-height: 375px;
+	position: relative;
+}
+#inputCode-editor {
+	margin: 1em;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	min-height: 350px;
+}
+
+textarea { font-family: monospace; }
+.ui-widget textarea {
+    font-family: monospace;
+    font-size: 1em;
+}
+</style>
+
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9156343-2']);
+  _gaq.push(['_trackPageview']);
+  _gaq.push(['_setDomainName', '.eclecticgeek.com']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+  })();
+
+</script>
+</head>
+
+<body>
+
+<div style="float: right;">
+	<p><a href="debug.php">Render another file</a></p>
+</div>
+<h1>Debug Helper</h1>
+
+
+<script type="text/javascript">
+var windowHeight = window.innerHeight;
+$(document).ready(function(){
+	$('iframe').height(windowHeight-200);
+	$('#dompdfOutput textarea').height(windowHeight-200);
+	$('#dompdfOutput').tabs({});
+
+	$('#inputsrc-textarea').hide();
+	$('#inputsrc-iframe').show();
+	$('input[name="inputsrc"]').change(function (evt) {
+		if ($(this).val() == 1) {
+			$('#inputsrc-textarea').hide();
+			$('#inputsrc-iframe').show();
+		} else {
+			$('#inputsrc-textarea').show();
+			$('#inputsrc-iframe').hide();
+		}
+	});
+	
+	$('#domdsrc-textarea').hide();
+	$('#domdsrc-iframe').show();
+	$('input[name="domdsrc"]').change(function (evt) {
+		if ($(this).val() == 1) {
+			$('#domdsrc-textarea').hide();
+			$('#domdsrc-iframe').show();
+		} else {
+			$('#domdsrc-textarea').show();
+			$('#domdsrc-iframe').hide();
+		}
+	});
+});
+</script>
+
+<div id="dompdfOutput">
+	<ul>
+		<li><a href="#dompdfOutput-pdf">PDF</a></li>
+		<li><a href="#dompdfOutput-htmlsrc">Source HTML</a></li>
+		<li><a href="#dompdfOutput-domdocument">DOMDocument HTML</a></li>
+					<li><a href="#dompdfOutput-pdfsrc">PDF Source</a></li>
+				<li><a href="#dompdfOutput-pdflog">dompdf Log</a></li>
+		<li><a href="#dompdfOutput-phperr">PHP Log</a></li>
+	</ul>
+
+	<div id="dompdfOutput-pdf">
+		<iframe src="rendertemp/dompdf-6d1081a49d84197ff5ae2239d3ae354c/render.pdf" width="100%" height="300"></iframe>
+	</div>
+
+	<div id="dompdfOutput-htmlsrc">
+		<p>View: <label><input type="radio" value="1" name="inputsrc" id="inputsrc" checked="checked">Document</label> <label><input type="radio" value="0" name="inputsrc" id="inputsrc">Source</label>
+		<iframe id="inputsrc-iframe" src="rendertemp/dompdf-6d1081a49d84197ff5ae2239d3ae354c/input.html" width="100%" height="300"></iframe>
+		<textarea id="inputsrc-textarea" style="width: 100%;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  hi
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+	</div>
+
+	<div id="dompdfOutput-domdocument">
+		<p>View: <label><input type="radio" value="1" name="domdsrc" id="domdsrc" checked="checked">Document</label> <label><input type="radio" value="0" name="domdsrc" id="domdsrc">Source</label>
+		<iframe id="domdsrc-iframe" src="rendertemp/dompdf-6d1081a49d84197ff5ae2239d3ae354c/domdocument.html" width="100%" height="300"></iframe>
+		<textarea id="domdsrc-textarea" style="width: 100%;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=UTF-8&quot;&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;&lt;/head&gt;&lt;body&gt;
+  hi
+&lt;/body&gt;&lt;/html&gt;
+</textarea>
+	</div>
+
+			<div id="dompdfOutput-pdfsrc">
+			<iframe src="rendertemp/dompdf-6d1081a49d84197ff5ae2239d3ae354c/render_source.html" width="100%" height="300"></iframe>
+		</div>
+	
+	<div id="dompdfOutput-pdflog">
+		<iframe src="rendertemp/dompdf-6d1081a49d84197ff5ae2239d3ae354c/pdflog.html" width="100%" height="300"></iframe>
+	</div>
+
+	<div id="dompdfOutput-phperr">
+		<iframe src="rendertemp/dompdf-6d1081a49d84197ff5ae2239d3ae354c/phperr.txt" width="100%" height="300"></iframe>
+	</div>
+</div>
+
+
+
+</body>
+</html>
